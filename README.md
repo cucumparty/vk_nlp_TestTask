@@ -1,49 +1,43 @@
-# Custom DPO Model with Language Model Training
+# Выравнивание языковой модели
 
-## Description
-This project is designed to fine-tune a language model using a dataset of instructions and responses. The model can be trained to respond in a specific style, such as sarcasm. The training process leverages a dataset that includes various responses, and the evaluation is based on predefined criteria.
+## Описание        
+Этот проект предназначен для дообучения языковой модели "IlyaGusev/saiga_llama3_8b" с использованием набора данных инструкций и ответов. Модель может быть обучена отвечать в определенном стиле, например сарказм. Процесс обучения использует набор данных, включающий различные ответы, а оценка основана на предопределенных критериях.
 
-## Requirements
-- Python 3.x
-- PyTorch
-- Transformers
-- Other necessary libraries listed in `requirements.txt`
-
-## Installation
-1. Clone the repository:
+## Установка
+1. Клонируйте репозиторий:
    ```bash
    git clone <repository-url>
    ```
-2. Navigate to the project directory:
+2. Перейдите в директорию проекта:
    ```bash
    cd <project-directory>
    ```
-3. Install the required packages:
+3. Установите необходимые пакеты:
    ```bash
    pip install -r requirements.txt
    ```
 
-## Usage
-To fine-tune the model and run the training process, use the following command:
+## Использование
+Чтобы дообучить модель и запустить процесс обучения, используйте следующую команду:
 
 ```bash
-python alignment.py --mode train --style <style> --train_number <train_num> --val_number <val_num> --criteria_file "criteria.txt"
+python alignment.py --mode=train --style=<style> --train_number=<train_num> --val_number=<val_num> --criteria_file=criteria.txt
 ```
 
-Where:
-- `--mode`: Can be `train` to start the fine-tuning process.
-- `--style`: Specifies the style of response the model should focus on (e.g., "sarcasm").
-- `--train_number`: Number of training samples to use.
-- `--val_number`: Number of validation samples to use.
-- `--criteria_file`: Path to the file containing response evaluation criteria (e.g., `criteria.txt`).
+Где:
+- `--mode`: `train`, чтобы видеть ответы и оценки модели, иначе `test`
+- `--style`: Указывает стиль ответа, на котором модель должна сосредоточиться (например, "сарказм").
+- `--train_number`: Количество тренировочных образцов для использования.
+- `--val_number`: Количество валидационных образцов для использования.
+- `--criteria_file`: Путь к файлу, содержащему критерии оценки ответов (например, `criteria.txt`).
 
-### Example:
+### Пример:
 ```bash
 python alignment.py --mode=train --style=сарказм --train_number=100 --val_number=10 --criteria_file=criteria.txt 
 ```
 
-## Criteria File (`criteria.txt`)
-The evaluation of responses is based on a criteria file. An example `criteria.txt` is as follows:
+## Файл критериев (`criteria.txt`)
+Оценка ответов основана на файле критериев. Пример `criteria.txt` выглядит следующим образом:
 
 ```plaintext
 1 — Совсем нет сарказма, ответ прямолинейный и серьезный. 
@@ -53,14 +47,16 @@ The evaluation of responses is based on a criteria file. An example `criteria.tx
 5 — Явный сарказм, ответ наполнен язвительными комментариями и насмешками.
 ```
 
-This file is used during evaluation to score the model's responses and guide training.
+Этот файл используется во время оценки для выставления оценок ответам модели и для управления обучением.
 
-## Model Evaluation
-After training, the model generates two responses for each input in the validation set:
-- **Base Response**: The initial output from the model.
-- **DPO Response**: The refined output after DPO training.
+## Оценка модели
+После обучения модель генерирует два ответа для каждого входа в валидационном наборе:
+- **Базовый ответ**: Начальный вывод от модели.
+- **Ответ DPO**: Уточненный вывод после обучения DPO.
 
-The results will be saved in an `responses.json` file.
+Результаты будут сохранены в файле `responses.json`.
 
+Для сравнения результатов полученной модели относительно базовой на тестовой выборке использовалась ручная оценка.  
+По результатам данной проверки получили, что после использования DPO, ответы начали выравниваться в нужную сторону.
 
 
